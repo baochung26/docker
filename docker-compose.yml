@@ -1,4 +1,4 @@
-version: "3.2"
+version: "3.3"
 services:
   php:
     build: './php/'
@@ -24,10 +24,10 @@ services:
     networks:
       - backend
     environment:
-      - MYSQL_ROOT_PASSWORD=secret
-      - MYSQL_DATABASE:test_db
-      - MYSQL_USER:testuser
-      - MYSQL_PASSWORD:testpass
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: test_db
+      MYSQL_USER: testuser
+      MYSQL_PASSWORD: testpass
 networks:
   frontend:
   backend:
