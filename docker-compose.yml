@@ -2,14 +2,14 @@ version: "3.3"
 services:
   php:
     build: './php/'
-    container_name: php7.3
+    container_name: ramen_php7.3
     networks:
       - backend
     volumes:
-      - ./public_html/:/var/www/html/
+      - ./source/:/var/www/html/
   apache:
     build: './apache/'
-    container_name: apache2.4
+    container_name: ramen_apache2.4
     depends_on:
       - php
       - mysql
@@ -19,17 +19,32 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ./public_html/:/var/www/html/
+      - ./source/:/var/www/html/
   mysql:
     image: mysql:8.0
+    container_name: ramen_mysql
     command: --default-authentication-plugin=mysql_native_password
     networks:
       - backend
     environment:
       MYSQL_ROOT_PASSWORD: secret
-      MYSQL_DATABASE: test_db
-      MYSQL_USER: testuser
-      MYSQL_PASSWORD: testpass
+      MYSQL_DATABASE: ramen
+      MYSQL_USER: miichi
+      MYSQL_PASSWORD: 123456
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: ramen_phpmyadmin
+    environment:
+      - PMA_ARBITRARY=10
+      - PMA_HOST=ramen_mysql
+      - PMA_PORT=3306
+
+    restart: always
+    ports:
+      - "18082:80"
+    networks:
+      - backend
+
 networks:
   frontend:
   backend:
