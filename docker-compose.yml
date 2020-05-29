@@ -7,6 +7,7 @@ services:
       - backend
     volumes:
       - ./source/:/var/www/html/
+      - ./php/config/config.ini:/usr/local/etc/php/conf.d/uploads.ini
   apache:
     build: './apache/'
     container_name: ramen_apache2.4
