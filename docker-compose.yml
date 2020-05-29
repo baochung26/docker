@@ -8,12 +8,21 @@ services:
     volumes:
       - ./source/:/var/www/html/
       - ./php/config/config.ini:/usr/local/etc/php/conf.d/uploads.ini
+  php_cli:
+    build: './php_cli/'
+    container_name: ramen_cron
+    networks:
+      - backend
+    volumes:
+      - ./source/:/var/www/html/
+      - ./php/config/config.ini:/usr/local/etc/php/conf.d/uploads.ini
   apache:
     build: './apache/'
     container_name: ramen_apache2.4
     depends_on:
       - php
       - mysql
+      - php_cli
     networks:
       - frontend
       - backend
