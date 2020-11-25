@@ -2,7 +2,7 @@ version: "3.3"
 services:
   php:
     build: './php/'
-    container_name: ramen_php7.3
+    container_name: php7.3
     networks:
       - backend
     volumes:
@@ -10,7 +10,7 @@ services:
       - ./php/config/config.ini:/usr/local/etc/php/conf.d/uploads.ini
   php_cli:
     build: './php_cli/'
-    container_name: ramen_cron
+    container_name: cron
     networks:
       - backend
     volumes:
@@ -18,7 +18,7 @@ services:
       - ./php/config/config.ini:/usr/local/etc/php/conf.d/uploads.ini
   apache:
     build: './apache/'
-    container_name: ramen_apache2.4
+    container_name: apache2.4
     depends_on:
       - php
       - mysql
@@ -32,7 +32,7 @@ services:
       - ./source/:/var/www/html/
   mysql:
     image: mysql:8.0
-    container_name: ramen_mysql
+    container_name: mysql
     command: --default-authentication-plugin=mysql_native_password
     networks:
       - backend
@@ -43,7 +43,7 @@ services:
       MYSQL_PASSWORD: 123456
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    container_name: ramen_phpmyadmin
+    container_name: phpmyadmin
     environment:
       - PMA_ARBITRARY=10
       - PMA_HOST=ramen_mysql
