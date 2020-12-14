@@ -27,9 +27,9 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Install cron
 RUN apt-get update
 RUN apt-get install -y nano
-RUN apt-get install -y cron
-
-COPY ./cron/laravel /etc/cron.d/laravel
-RUN chmod 0644 /etc/cron.d/laravel
-RUN crontab /etc/cron.d/laravel
-CMD ["cron", "-f", "./start.sh"]
+#RUN apt-get install -y cron
+#
+#COPY ./cron/laravel /etc/cron.d/laravel
+#RUN chmod 0644 /etc/cron.d/laravel
+#RUN crontab /etc/cron.d/laravel
+#CMD ["cron", "-f", "./start.sh"]

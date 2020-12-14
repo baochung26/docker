@@ -38,6 +38,8 @@ services:
       - "33066:3306"
     networks:
       - backend
+    volumes:
+      - ./source/:/var/www/html/
     environment:
       MYSQL_ROOT_PASSWORD: secret
       MYSQL_DATABASE: ramen
