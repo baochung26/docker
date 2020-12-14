@@ -8,9 +8,17 @@ services:
     volumes:
       - ./source/:/var/www/html/
       - ./php/config/config.ini:/usr/local/etc/php/conf.d/uploads.ini
-  php_cli:
-    build: './php_cli/'
-    container_name: cron
+  supervisor:
+    build: './supervisor/'
+    container_name: supervisor
+    networks:
+      - backend
+    volumes:
+      - ./source/:/var/www/html/
+      - ./php/config/config.ini:/usr/local/etc/php/conf.d/uploads.ini
+  cronjob:
+    build: './cronjob/'
+    container_name: cronjob
     networks:
       - backend
     volumes:
@@ -22,7 +30,7 @@ services:
     depends_on:
       - php
       - mysql
-      - php_cli
+      - supervisor
     networks:
       - frontend
       - backend

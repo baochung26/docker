@@ -24,19 +24,12 @@ RUN apt-get update && apt-get install -y \
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-RUN apt-get update
-RUN apt-get install -y --no-install-recommends supervisor
-
-COPY ./supervisor/supervisord.conf /etc/supervisor
-COPY ./supervisor/laravel.conf /etc/supervisor/conf.d
-
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
-
 # Install cron
-#RUN apt-get update
-#RUN apt-get install -y cron
-#
-#COPY ./cron/laravel /etc/cron.d/laravel
-#RUN chmod 0644 /etc/cron.d/laravel
-#RUN crontab /etc/cron.d/laravel
-#CMD ["cron", "-f", "./start.sh"]
+RUN apt-get update
+RUN apt-get install -y nano
+RUN apt-get install -y cron
+
+COPY ./cron/laravel /etc/cron.d/laravel
+RUN chmod 0644 /etc/cron.d/laravel
+RUN crontab /etc/cron.d/laravel
+CMD ["cron", "-f", "./start.sh"]
