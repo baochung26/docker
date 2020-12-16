@@ -1,4 +1,4 @@
-FROM php:7.4-fpm
+FROM php:7.4-fpm AS php
 
 RUN docker-php-ext-install mysqli
 RUN docker-php-ext-install pdo_mysql
@@ -27,9 +27,24 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Install cron
 RUN apt-get update
 RUN apt-get install -y nano
-#RUN apt-get install -y cron
-#
-#COPY ./cron/laravel /etc/cron.d/laravel
-#RUN chmod 0644 /etc/cron.d/laravel
-#RUN crontab /etc/cron.d/laravel
-#CMD ["cron", "-f", "./start.sh"]
+
+
+# IMAGE RUN CRONJOB
+FROM php AS cron
+
+RUN apt-get update
+RUN apt-get install -y cron
+COPY ./cron/laravel /etc/cron.d/laravel
+RUN chmod 0644 /etc/cron.d/laravel
+RUN crontab /etc/cron.d/laravel
+CMD ["cron", "-f", "./start.sh"]
+
+
+# IMAGE RUN QUEUE
+FROM php AS queue
+
+RUN apt-get update
+RUN apt-get install -y --no-install-recommends supervisor
+COPY ./supervisor/supervisord.conf /etc/supervisor
+COPY ./supervisor/laravel.conf /etc/supervisor/conf.d
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]

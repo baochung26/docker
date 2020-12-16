@@ -1,7 +1,9 @@
-version: "3.3"
+version: "3.4"
 services:
   php:
-    build: './php/'
+    build:
+      context: './php/'
+      target: php
     container_name: php7.4
     networks:
       - backend
@@ -9,7 +11,9 @@ services:
       - ./source/:/var/www/html/
       - ./php/config/config.ini:/usr/local/etc/php/conf.d/uploads.ini
   supervisor:
-    build: './supervisor/'
+    build:
+      context: './php/'
+      target: queue
     container_name: supervisor
     networks:
       - backend
@@ -17,7 +21,9 @@ services:
       - ./source/:/var/www/html/
       - ./php/config/config.ini:/usr/local/etc/php/conf.d/uploads.ini
   cronjob:
-    build: './cronjob/'
+    build:
+      context: './php/'
+      target: cron
     container_name: cronjob
     networks:
       - backend
