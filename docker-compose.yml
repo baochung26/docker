@@ -1,20 +1,24 @@
 version: "3.4"
 services:
+  apache:
+    build: './apache/'
+    container_name: apache2.4
+    depends_on:
+      - php
+      - mysql
+      - supervisor
+    networks:
+      - frontend
+      - backend
+    ports:
+      - "6969:80"
+    volumes:
+      - ./source/:/var/www/html/
   php:
     build:
       context: './php/'
       target: php
     container_name: php7.4
-    networks:
-      - backend
-    volumes:
-      - ./source/:/var/www/html/
-      - ./php/config/config.ini:/usr/local/etc/php/conf.d/uploads.ini
-  supervisor:
-    build:
-      context: './php/'
-      target: queue
-    container_name: supervisor
     networks:
       - backend
     volumes:
@@ -30,20 +34,16 @@ services:
     volumes:
       - ./source/:/var/www/html/
       - ./php/config/config.ini:/usr/local/etc/php/conf.d/uploads.ini
-  apache:
-    build: './apache/'
-    container_name: apache2.4
-    depends_on:
-      - php
-      - mysql
-      - supervisor
+  supervisor:
+    build:
+      context: './php/'
+      target: queue
+    container_name: supervisor
     networks:
-      - frontend
       - backend
-    ports:
-      - "6969:80"
     volumes:
       - ./source/:/var/www/html/
+      - ./php/config/config.ini:/usr/local/etc/php/conf.d/uploads.ini
   mysql:
     image: mysql:8.0
     container_name: mysql
