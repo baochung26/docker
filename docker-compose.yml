@@ -41,7 +41,7 @@ services:
       - frontend
       - backend
     ports:
-      - "8088:80"
+      - "6969:80"
     volumes:
       - ./source/:/var/www/html/
   mysql:
@@ -56,8 +56,8 @@ services:
       - ./source/:/var/www/html/
     environment:
       MYSQL_ROOT_PASSWORD: secret
-      MYSQL_DATABASE: ramen
-      MYSQL_USER: miichi
+      MYSQL_DATABASE: test_db
+      MYSQL_USER: admin
       MYSQL_PASSWORD: 123456
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
