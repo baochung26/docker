@@ -5,7 +5,7 @@ services:
     container_name: apache2.4
     depends_on:
       - php
-      - mysql
+      - mariadb
       - supervisor
     networks:
       - frontend
