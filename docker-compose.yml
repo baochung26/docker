@@ -1,7 +1,7 @@
 version: "3.4"
 services:
   apache:
-    build: './apache/'
+    build: './docker/apache/'
     container_name: apache2.4
     depends_on:
       - php
@@ -13,37 +13,37 @@ services:
     ports:
       - "6969:80"
     volumes:
-      - ./source/:/var/www/html/
+      - ./:/var/www/html/
   php:
     build:
-      context: './php/'
+      context: './docker/php/'
       target: php
     container_name: php7.4
     networks:
       - backend
     volumes:
-      - ./source/:/var/www/html/
-      - ./php/config/config.ini:/usr/local/etc/php/conf.d/uploads.ini
+      - ./:/var/www/html/
+      - ./docker/php/config/config.ini:/usr/local/etc/php/conf.d/uploads.ini
   cronjob:
     build:
-      context: './php/'
+      context: './docker/php/'
       target: cron
     container_name: cronjob
     networks:
       - backend
     volumes:
-      - ./source/:/var/www/html/
-      - ./php/config/config.ini:/usr/local/etc/php/conf.d/uploads.ini
+      - ./:/var/www/html/
+      - ./docker/php/config/config.ini:/usr/local/etc/php/conf.d/uploads.ini
   supervisor:
     build:
-      context: './php/'
+      context: './docker/php/'
       target: queue
     container_name: supervisor
     networks:
       - backend
     volumes:
-      - ./source/:/var/www/html/
-      - ./php/config/config.ini:/usr/local/etc/php/conf.d/uploads.ini
+      - ./:/var/www/html/
+      - ./docker/php/config/config.ini:/usr/local/etc/php/conf.d/uploads.ini
   mysql:
     image: mysql:8.0
     container_name: mysql
@@ -53,7 +53,7 @@ services:
     networks:
       - backend
     volumes:
-      - ./source/:/var/www/html/
+      - ./:/var/www/html/
     environment:
       MYSQL_ROOT_PASSWORD: secret
       MYSQL_DATABASE: test_db
