@@ -3,6 +3,7 @@ services:
   apache:
     build: './docker/apache/'
     container_name: apache2.4
+    restart: always
     depends_on:
       - php
       - mysql
@@ -19,6 +20,7 @@ services:
       context: './docker/php/'
       target: php
     container_name: php7.4
+    restart: always
     networks:
       - backend
     volumes:
@@ -29,6 +31,7 @@ services:
       context: './docker/php/'
       target: cron
     container_name: cronjob
+    restart: always
     networks:
       - backend
     volumes:
@@ -39,6 +42,7 @@ services:
       context: './docker/php/'
       target: queue
     container_name: supervisor
+    restart: always
     networks:
       - backend
     volumes:
@@ -47,6 +51,7 @@ services:
   mysql:
     image: mysql:8.0
     container_name: mysql
+    restart: always
     command: --default-authentication-plugin=mysql_native_password
     ports:
       - "33066:3306"
